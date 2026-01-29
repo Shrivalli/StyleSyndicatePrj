@@ -1,0 +1,18 @@
+# Node modules
+node_modules/
+ClientApp/node_modules/
+
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+
+# User files
+*.user
+*.suo
+
+# Log files
+*.log
+
+# Environment
+.env

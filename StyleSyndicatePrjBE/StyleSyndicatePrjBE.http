@@ -1,0 +1,6 @@
+@StyleSyndicatePrjBE_HostAddress = http://localhost:5118
+
+GET {{StyleSyndicatePrjBE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

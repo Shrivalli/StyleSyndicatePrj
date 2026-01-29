@@ -1,0 +1,76 @@
+<div class="container">
+  <h1>🎩 Style Syndicate - Fashion Consultation</h1>
+
+  <div class="form-section">
+    <div class="form-group">
+      <label for="user">Select User:</label>
+      <select id="user" [(ngModel)]="selectedUserId" [disabled]="loading">
+        <option *ngFor="let user of users" [value]="user.id">
+          {{ user.firstName }} {{ user.lastName }} (Budget: ${{ user.budget }})
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="request">Style Request:</label>
+      <textarea
+        id="request"
+        [(ngModel)]="requestText"
+        [disabled]="loading"
+        placeholder="Describe your style needs..."
+        rows="4"
+      ></textarea>
+    </div>
+
+    <button
+      (click)="curateOutfit()"
+      [disabled]="loading"
+      class="btn-primary"
+    >
+      {{ loading ? 'Curating Outfit...' : 'Get Style Recommendation' }}
+    </button>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    ❌ {{ error }}
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>🔄 Processing your request through our agent network...</p>
+  </div>
+
+  <div *ngIf="workflowResponse" class="response-section">
+    <h2>Workflow Results</h2>
+
+    <div class="agent-messages">
+      <h3>Agent Conversation:</h3>
+      <div *ngFor="let msg of workflowResponse.messages" class="agent-message">
+        <div class="agent-header" [style.backgroundColor]="getAgentColor(msg.agent)">
+          <strong>{{ msg.agent }}</strong> - {{ msg.role }}
+        </div>
+        <div class="agent-content">
+          {{ msg.content }}
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="workflowResponse.finalOutfit" class="final-outfit">
+      <h3>✨ Final Curated Outfit</h3>
+      <div class="outfit-details">
+        <p><strong>Total Price:</strong> ${{ workflowResponse.finalOutfit.totalPrice }}</p>
+        <p><strong>Critic Feedback:</strong> {{ workflowResponse.finalOutfit.criticFeedback }}</p>
+        
+        <h4>Why We Picked These Items:</h4>
+        <ul>
+          <li *ngFor="let justification of workflowResponse.finalOutfit.justifications">
+            {{ justification }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="status" [ngClass]="workflowResponse.status.toLowerCase()">
+      Status: {{ workflowResponse.status }}
+    </div>
+  </div>
+</div>

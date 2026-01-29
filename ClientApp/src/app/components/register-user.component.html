@@ -1,0 +1,181 @@
+<div class="container">
+  <h1>👤 Register New User</h1>
+
+  <div class="form-section">
+    <h2>Personal Information</h2>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="newUser.email"
+          [disabled]="loading"
+          placeholder="user@example.com"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <input
+          type="text"
+          id="firstName"
+          [(ngModel)]="newUser.firstName"
+          [disabled]="loading"
+          placeholder="John"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <input
+          type="text"
+          id="lastName"
+          [(ngModel)]="newUser.lastName"
+          [disabled]="loading"
+          placeholder="Doe"
+        />
+      </div>
+    </div>
+
+    <h2>Style Preferences</h2>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="size">Size:</label>
+        <select id="size" [(ngModel)]="newUser.size" [disabled]="loading">
+          <option *ngFor="let size of sizes" [value]="size">{{ size }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="fitPreference">Fit Preference:</label>
+        <select id="fitPreference" [(ngModel)]="newUser.fitPreference" [disabled]="loading">
+          <option *ngFor="let fit of fitPreferences" [value]="fit">{{ fit }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="budget">Budget ($):</label>
+        <input
+          type="number"
+          id="budget"
+          [(ngModel)]="newUser.budget"
+          [disabled]="loading"
+          min="0"
+          step="100"
+        />
+      </div>
+    </div>
+
+    <h2>Preferences & Dislikes</h2>
+
+    <div class="preference-group">
+      <label>Disliked Colors:</label>
+      <div class="input-with-button">
+        <input
+          type="text"
+          [(ngModel)]="dislikedColorInput"
+          [disabled]="loading"
+          placeholder="e.g., yellow, neon"
+        />
+        <button
+          (click)="addDislikedColor()"
+          [disabled]="loading"
+          class="btn-add"
+        >
+          Add Color
+        </button>
+      </div>
+      <div class="tags">
+        <span *ngFor="let color of newUser.dislikedColors" class="tag">
+          {{ color }}
+          <button (click)="removeDislikedColor(color)" [disabled]="loading" class="btn-remove">
+            ✕
+          </button>
+        </span>
+      </div>
+    </div>
+
+    <div class="preference-group">
+      <label>Preferred Brands:</label>
+      <div class="input-with-button">
+        <input
+          type="text"
+          [(ngModel)]="preferredBrandInput"
+          [disabled]="loading"
+          placeholder="e.g., Gucci, Prada"
+        />
+        <button
+          (click)="addPreferredBrand()"
+          [disabled]="loading"
+          class="btn-add"
+        >
+          Add Brand
+        </button>
+      </div>
+      <div class="tags">
+        <span *ngFor="let brand of newUser.preferredBrands" class="tag">
+          {{ brand }}
+          <button (click)="removePreferredBrand(brand)" [disabled]="loading" class="btn-remove">
+            ✕
+          </button>
+        </span>
+      </div>
+    </div>
+
+    <div class="preference-group">
+      <label>Avoided Materials:</label>
+      <div class="input-with-button">
+        <input
+          type="text"
+          [(ngModel)]="avoidedMaterialInput"
+          [disabled]="loading"
+          placeholder="e.g., polyester, wool"
+        />
+        <button
+          (click)="addAvoidedMaterial()"
+          [disabled]="loading"
+          class="btn-add"
+        >
+          Add Material
+        </button>
+      </div>
+      <div class="tags">
+        <span *ngFor="let material of newUser.avoidedMaterials" class="tag">
+          {{ material }}
+          <button (click)="removeAvoidedMaterial(material)" [disabled]="loading" class="btn-remove">
+            ✕
+          </button>
+        </span>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button
+        (click)="registerUser()"
+        [disabled]="loading"
+        class="btn-primary"
+      >
+        {{ loading ? 'Registering...' : 'Register User' }}
+      </button>
+
+      <button
+        (click)="resetForm()"
+        [disabled]="loading"
+        class="btn-secondary"
+      >
+        Clear Form
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="success" class="success-message">
+    ✅ User registered successfully! User ID: {{ newUser.id }}
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    ❌ {{ error }}
+  </div>
+</div>

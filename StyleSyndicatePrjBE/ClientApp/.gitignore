@@ -1,0 +1,22 @@
+# Node
+node_modules/
+
+# Angular build
+dist/
+.build/
+/.angular
+
+# Logs
+npm-debug.log*
+logs/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
