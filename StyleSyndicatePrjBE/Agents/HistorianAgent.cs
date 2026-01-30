@@ -83,6 +83,14 @@ You have access to customer databases and can retrieve:
         return 0;
     }
 
+    protected override string GenerateResponse(string userInput)
+    {
+        var userId = ExtractUserIdFromInput(userInput);
+        if (userId == 0)
+            return "Unable to identify user. Please provide a valid user ID.";
+        return $"User profile retrieved for ID: {userId}";
+    }
+
     private string GenerateHistorianReport(User? user)
     {
         if (user == null)

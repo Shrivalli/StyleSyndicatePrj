@@ -29,6 +29,9 @@ public class AutoGenConfig
             new AzureKeyCredential(ApiKey));
     }
 
+    // ChatCompletionOptions not available in AutoGen 0.4.0-dev.3
+    // Commented out for compatibility
+    /*
     /// <summary>
     /// Create a mock client for development/testing (when Azure credentials unavailable)
     /// </summary>
@@ -41,6 +44,7 @@ public class AutoGenConfig
             TopP = 0.9f
         };
     }
+    */
 }
 
 /// <summary>

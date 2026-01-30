@@ -1,4 +1,3 @@
-using Microsoft.AutoGen.Agents;
 using StyleSyndicatePrjBE.Models;
 
 namespace StyleSyndicatePrjBE.Agents;

@@ -115,9 +115,9 @@ public class AutoGenGroupChatManager : IAutoGenGroupChatManager
     /// <summary>
     /// Get a summary of a specific agent's analysis and findings
     /// </summary>
-    public async Task<string> GetAgentSummaryAsync(string agentName)
+    public Task<string> GetAgentSummaryAsync(string agentName)
     {
-        return agentName.ToLower() switch
+        var result = agentName.ToLower() switch
         {
             "concierge" => string.Join("\n", _conciergeAgent.GetConversationHistory().Select(m => m.Content)),
             "historian" => string.Join("\n", _historianAgent.GetConversationHistory().Select(m => m.Content)),
@@ -126,6 +126,7 @@ public class AutoGenGroupChatManager : IAutoGenGroupChatManager
             "critic" => string.Join("\n", _criticAgent.GetConversationHistory().Select(m => m.Content)),
             _ => "Agent not found"
         };
+        return Task.FromResult(result);
     }
 
     private string ExtractLocationDate(string userRequest)
@@ -151,7 +152,7 @@ public class AutoGenGroupChatManager : IAutoGenGroupChatManager
                $"prefer: {string.Join(", ", userData.PreferredBrands)}";
     }
 
-    private async Task<CuratedOutfit> GenerateFinalOutfitAsync(int userId, List<AgentMessage> conversationHistory)
+    private Task<CuratedOutfit> GenerateFinalOutfitAsync(int userId, List<AgentMessage> conversationHistory)
     {
         // Extract selected products from inventory message
         var inventoryMsg = conversationHistory.FirstOrDefault(m => m.Agent.Contains("Inventory"));
@@ -173,7 +174,7 @@ public class AutoGenGroupChatManager : IAutoGenGroupChatManager
             CriticFeedback = "✅ Outfit approved: cohesive, appropriate, and within all constraints"
         };
 
-        return outfit;
+        return Task.FromResult(outfit);
     }
 
     private List<int> ExtractProductIdsFromMessage(string message)
