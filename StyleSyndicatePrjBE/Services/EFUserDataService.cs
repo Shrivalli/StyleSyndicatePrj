@@ -48,7 +48,7 @@ public class EFUserDataService : IUserDataService
         }
     }
 
-    public async Task<List<User>> GetAllUsersAsync()
+    public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
         return await _context.Users.ToListAsync();
     }

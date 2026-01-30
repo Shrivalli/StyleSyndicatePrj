@@ -5,6 +5,7 @@ namespace StyleSyndicatePrjBE.Services;
 public interface IUserDataService
 {
     Task<User?> GetUserDataAsync(int userId);
+    Task<IEnumerable<User>> GetAllUsersAsync();
     Task<bool> SaveUserDataAsync(User user);
 }
 
@@ -50,5 +51,10 @@ public class MockUserDataService : IUserDataService
     {
         _users[user.Id] = user;
         return Task.FromResult(true);
+    }
+
+    public Task<IEnumerable<User>> GetAllUsersAsync()
+    {
+        return Task.FromResult(_users.Values.AsEnumerable());
     }
 }

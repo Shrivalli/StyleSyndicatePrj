@@ -1,5 +1,10 @@
 namespace StyleSyndicatePrjBE.Models;
 
+public class StyleRequestDto
+{
+    public string UserRequest { get; set; } = string.Empty;
+}
+
 public class AgentMessage
 {
     public string Agent { get; set; } = string.Empty;
