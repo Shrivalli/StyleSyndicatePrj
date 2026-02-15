@@ -26,17 +26,17 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Configure AutoGen services
+// Configure Groq API services
 var autoGenConfig = new AutoGenConfig
 {
-    ApiKey = builder.Configuration["AzureOpenAI:ApiKey"],
-    Endpoint = builder.Configuration["AzureOpenAI:Endpoint"],
-    ModelName = builder.Configuration["AzureOpenAI:ModelName"] ?? "gpt-4",
-    MaxTokens = int.Parse(builder.Configuration["AzureOpenAI:MaxTokens"] ?? "2000"),
-    Temperature = float.Parse(builder.Configuration["AzureOpenAI:Temperature"] ?? "0.7")
+    ApiKey = builder.Configuration["Groq:ApiKey"],
+    BaseUrl = builder.Configuration["Groq:BaseUrl"] ?? "https://api.groq.com/openai/v1",
+    ModelName = builder.Configuration["Groq:ModelName"] ?? "mixtral-8x7b-32768",
+    MaxTokens = int.Parse(builder.Configuration["Groq:MaxTokens"] ?? "2000"),
+    Temperature = float.Parse(builder.Configuration["Groq:Temperature"] ?? "0.7")
 };
 builder.Services.AddSingleton(autoGenConfig);
-builder.Services.AddSingleton<MockLLMProvider>();
+builder.Services.AddSingleton<GroqLLMProvider>();
 
 // Register Services (using EF-based implementations)
 builder.Services.AddScoped<IUserDataService, EFUserDataService>();

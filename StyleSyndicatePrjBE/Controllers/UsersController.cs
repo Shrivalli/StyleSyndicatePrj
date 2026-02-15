@@ -18,6 +18,17 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
+    /// Get all users
+    /// </summary>
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        var users = await _userDataService.GetAllUsersAsync();
+        return Ok(users);
+    }
+
+    /// <summary>
     /// Get user profile by ID
     /// </summary>
     [HttpGet("{userId}")]

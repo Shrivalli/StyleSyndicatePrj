@@ -90,6 +90,12 @@ You use RAG (Retrieval-Augmented Generation) to:
         };
     }
 
+    protected override string GenerateResponse(string userInput)
+    {
+        var criteria = ExtractSearchCriteria(userInput, ConversationHistory);
+        return $"Searching products: size {criteria.Size}, max price ${criteria.MaxPrice}";
+    }
+
     private string GenerateProductRecommendations(List<Product> products)
     {
         var recommendations = string.Join("\n", products.Take(5).Select(p => 

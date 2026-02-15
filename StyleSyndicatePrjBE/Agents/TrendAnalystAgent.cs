@@ -31,31 +31,32 @@ You analyze:
 - Seasonal style recommendations";
     }
 
-    public override async Task<AgentMessage> ProcessAsync(string userInput)
+    public async Task<AgentMessage> ProcessAsync(string userInput)
     {
-        var (location, date) = ExtractLocationAndDate(userInput);
+        var content = await base.ProcessAsync(userInput);
+        // var (location, date) = ExtractLocationAndDate(userInput);
         
-        if (string.IsNullOrEmpty(location))
-        {
-            var errorMsg = new AgentMessage
-            {
-                Agent = AgentName,
-                Role = Role,
-                Content = "Please provide location and date information for trend analysis.",
-                Timestamp = DateTime.UtcNow
-            };
-            ConversationHistory.Add(errorMsg);
-            return errorMsg;
-        }
+        // if (string.IsNullOrEmpty(location))
+        // {
+        //     var errorMsg = new AgentMessage
+        //     {
+        //         Agent = AgentName,
+        //         Role = Role,
+        //         Content = "Please provide location and date information for trend analysis.",
+        //         Timestamp = DateTime.UtcNow
+        //     };
+        //     ConversationHistory.Add(errorMsg);
+        //     return errorMsg;
+        // }
 
-        var trends = await _trendService.GetTrendsAsync(location, date);
-        var content = GenerateTrendAnalysis(location, date, trends);
+        // var trends = await _trendService.GetTrendsAsync(location, date);
+        // var content = GenerateTrendAnalysis(location, date, trends);
         
         var response = new AgentMessage
         {
             Agent = AgentName,
             Role = Role,
-            Content = content,
+            Content = content.Content,
             Timestamp = DateTime.UtcNow
         };
 
@@ -86,6 +87,14 @@ You analyze:
         return (location, date);
     }
 
+    protected override string GenerateResponse(string userInput)
+    {
+        var (location, date) = ExtractLocationAndDate(userInput);
+        if (string.IsNullOrEmpty(location))
+            return "Please provide location and date information for trend analysis.";
+        return $"Trend analysis for {location} on {date:MMMM yyyy}";
+    }
+
     private string GenerateTrendAnalysis(string location, DateTime date, TrendData trends)
     {
         return $@"🌍 Fashion & Weather Analysis for {location}:
@@ -93,11 +102,7 @@ You analyze:
 - Weather: {trends.WeatherDescription}, {trends.TemperatureRange}°C
 - Top Trends: {string.Join(", ", trends.TrendingStyles)}
 - Recommended Colors: {string.Join(", ", trends.TrendingColors)}
-- Popular Materials: {string.Join(", ", trends.TrendingMaterials)}";
-    }
-}
-- Recommended Materials: {string.Join(", ", trends.RecommendedMaterials)}
-- Color Palette: {string.Join(", ", trends.TrendingColors)}
+- Popular Materials: {string.Join(", ", trends.RecommendedMaterials)}
 - Style Notes: {trends.StyleNotes}";
     }
 }

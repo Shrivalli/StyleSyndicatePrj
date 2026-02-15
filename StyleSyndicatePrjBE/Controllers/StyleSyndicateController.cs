@@ -26,9 +26,9 @@ public class StyleSyndicateController : ControllerBase
     [HttpPost("curate-outfit")]
     [ProducesResponseType(typeof(WorkflowResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CurateOutfit(int userId, [FromBody] string userRequest)
+    public async Task<IActionResult> CurateOutfit(int userId, [FromBody] StyleRequestDto request)
     {
-        if (userId <= 0 || string.IsNullOrWhiteSpace(userRequest))
+        if (userId <= 0 || request == null || string.IsNullOrWhiteSpace(request.UserRequest))
         {
             return BadRequest("Invalid user ID or request content");
         }
@@ -37,7 +37,7 @@ public class StyleSyndicateController : ControllerBase
         {
             _logger.LogInformation("Style curation requested for user {UserId}", userId);
             
-            var result = await _groupChatManager.ProcessStyleRequestAsync(userId, userRequest);
+            var result = await _groupChatManager.ProcessStyleRequestAsync(userId, request.UserRequest);
             
             _logger.LogInformation("Style curation completed for user {UserId}", userId);
             return Ok(result);

@@ -74,7 +74,7 @@ export class ApiService {
   curateOutfit(userId: number, request: string): Observable<any> {
     return this.http.post<any>(
       `${this.apiUrl}/stylesyndicate/curate-outfit?userId=${userId}`,
-      request
+      { userRequest: request }
     );
   }
 }
