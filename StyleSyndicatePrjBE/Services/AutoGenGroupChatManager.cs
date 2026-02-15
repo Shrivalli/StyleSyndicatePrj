@@ -1,6 +1,7 @@
 using StyleSyndicatePrjBE.Models;
 using StyleSyndicatePrjBE.Agents;
 using StyleSyndicatePrjBE.Services;
+using StyleSyndicatePrjBE.Configuration;
 
 namespace StyleSyndicatePrjBE.Services;
 
@@ -8,6 +9,7 @@ namespace StyleSyndicatePrjBE.Services;
 /// AutoGen-based GroupChat Manager
 /// Orchestrates multi-agent collaboration using AutoGen patterns
 /// Manages conversation flow and state across all 5 specialized agents
+/// Now supports Groq API for real LLM responses
 /// </summary>
 public interface IAutoGenGroupChatManager
 {
@@ -25,6 +27,8 @@ public class AutoGenGroupChatManager : IAutoGenGroupChatManager
     private readonly IUserDataService _userDataService;
     private readonly IInventoryService _inventoryService;
     private readonly ILogger<AutoGenGroupChatManager> _logger;
+    private readonly GroqLLMProvider _groqProvider;
+    private readonly AutoGenConfig _config;
 
     public AutoGenGroupChatManager(
         ConciergeAgent conciergeAgent,
@@ -34,7 +38,9 @@ public class AutoGenGroupChatManager : IAutoGenGroupChatManager
         CriticAgent criticAgent,
         IUserDataService userDataService,
         IInventoryService inventoryService,
-        ILogger<AutoGenGroupChatManager> logger)
+        ILogger<AutoGenGroupChatManager> logger,
+        GroqLLMProvider groqProvider,
+        AutoGenConfig config)
     {
         _conciergeAgent = conciergeAgent;
         _historianAgent = historianAgent;
@@ -44,6 +50,23 @@ public class AutoGenGroupChatManager : IAutoGenGroupChatManager
         _userDataService = userDataService;
         _inventoryService = inventoryService;
         _logger = logger;
+        _groqProvider = groqProvider;
+        _config = config;
+
+        // Initialize all agents with Groq provider
+        InitializeAgents();
+    }
+
+    /// <summary>
+    /// Initialize all agents with Groq provider for LLM support
+    /// </summary>
+    private void InitializeAgents()
+    {
+        _conciergeAgent.InitializeGroqProvider(_groqProvider, _config, _logger);
+        _historianAgent.InitializeGroqProvider(_groqProvider, _config, _logger);
+        _trendAnalystAgent.InitializeGroqProvider(_groqProvider, _config, _logger);
+        _inventoryScoutAgent.InitializeGroqProvider(_groqProvider, _config, _logger);
+        _criticAgent.InitializeGroqProvider(_groqProvider, _config, _logger);
     }
 
     /// <summary>

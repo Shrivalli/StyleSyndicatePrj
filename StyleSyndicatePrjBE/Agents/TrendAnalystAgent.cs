@@ -31,31 +31,32 @@ You analyze:
 - Seasonal style recommendations";
     }
 
-    public override async Task<AgentMessage> ProcessAsync(string userInput)
+    public async Task<AgentMessage> ProcessAsync(string userInput)
     {
-        var (location, date) = ExtractLocationAndDate(userInput);
+        var content = await base.ProcessAsync(userInput);
+        // var (location, date) = ExtractLocationAndDate(userInput);
         
-        if (string.IsNullOrEmpty(location))
-        {
-            var errorMsg = new AgentMessage
-            {
-                Agent = AgentName,
-                Role = Role,
-                Content = "Please provide location and date information for trend analysis.",
-                Timestamp = DateTime.UtcNow
-            };
-            ConversationHistory.Add(errorMsg);
-            return errorMsg;
-        }
+        // if (string.IsNullOrEmpty(location))
+        // {
+        //     var errorMsg = new AgentMessage
+        //     {
+        //         Agent = AgentName,
+        //         Role = Role,
+        //         Content = "Please provide location and date information for trend analysis.",
+        //         Timestamp = DateTime.UtcNow
+        //     };
+        //     ConversationHistory.Add(errorMsg);
+        //     return errorMsg;
+        // }
 
-        var trends = await _trendService.GetTrendsAsync(location, date);
-        var content = GenerateTrendAnalysis(location, date, trends);
+        // var trends = await _trendService.GetTrendsAsync(location, date);
+        // var content = GenerateTrendAnalysis(location, date, trends);
         
         var response = new AgentMessage
         {
             Agent = AgentName,
             Role = Role,
-            Content = content,
+            Content = content.Content,
             Timestamp = DateTime.UtcNow
         };
 
